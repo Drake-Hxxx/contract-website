@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Publicis Groupe Remote Work Employment Agreement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        .contract {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: auto;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            max-width: 200px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #003366;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 7px;
+            margin: 5px 0 15px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+        }
+        canvas {
+            border: 1px solid #aaa;
+            border-radius: 4px;
+        }
+        .signature-pad {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0055a5;
+        }
+        .note {
+            color: gray;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="contract">
+    <div class="logo">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA..." alt="Publicis Groupe Logo">
+    </div>
+
+    <h1>Publicis Groupe</h1>
+    <h2>Remote Work Employment Agreement</h2>
+
+    <p>This Employment Agreement ("Agreement") is made and entered into on this ___ day of __________, 20___, by and between:</p>
+
+    <ul>
+        <li><strong>Employer:</strong> Publicis Groupe ("Company")</li>
+        <li><strong>Employee:</strong> <span id="name-display">__________________</span></li>
+    </ul>
+
+    <p>
+        By signing below, the Employee agrees to the terms outlined in this Remote Work Employment Agreement, including the probationary period, remote work expectations, confidentiality requirements, and benefits upon successful completion.
+    </p>
+
+    <h3>Employee Information</h3>
+    <label>Full Name:</label>
+    <input type="text" id="fullname" required oninput="document.getElementById('name-display').innerText=this.value || '__________________'">
+
+    <label>Email:</label>
+    <input type="email" id="email" required>
+
+    <label>Date:</label>
+    <input type="date" id="date" required>
+
+    <h3>Signature</h3>
+    <div class="signature-pad">
+        <canvas id="canvas" width="600" height="200"></canvas><br>
+        <button onclick="clearCanvas()">Clear Signature</button>
+    </div>
+
+    <button onclick="downloadContract()">Download Signed Contract (PDF)</button>
+
+    <p class="note">By signing and downloading, you agree to the terms of this Agreement under the U.S. Electronic Signatures in Global and National Commerce Act (ESIGN).</p>
+</div>
+
+<script>
+    // Signature canvas
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    canvas.addEventListener('mousedown', e => {
+        drawing = true;
+        ctx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    canvas.addEventListener('mousemove', e => {
+        if (drawing) {
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+        }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+        drawing = false;
+    });
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function downloadContract() {
+        const name = document.getElementById('fullname').value;
+        const email = document.getElementById('email').value;
+        const date = document.getElementById('date').value;
+
+        if (!name || !email || !date) {
+            alert('Please fill in all the fields and sign.');
+            return;
+        }
+
+        const contractText = `
+Publicis Groupe Remote Work Employment Agreement
+
+This Employment Agreement ("Agreement") is made and entered into on ${date}, by and between:
+
+Employer: Publicis Groupe ("Company")
+Employee: ${name} (${email})
+
+The Employee agrees to the terms outlined in this Remote Work Employment Agreement, including:
+- A 5-day probationary period
+- Remote work expectations
+- Confidentiality requirements
+- Eligibility for benefits upon successful completion
+
+Signed on: ${date}
+
+Employee Signature:
+`;
+
+        const signatureImage = canvas.toDataURL('image/png');
+
+        const pdf = new window.jspdf.jsPDF();
+        pdf.setFontSize(12);
+        pdf.text(contractText, 10, 20);
+        pdf.addImage(signatureImage, 'PNG', 10, 100, 180, 60);
+        pdf.text(`Employee Name: ${name}`, 10, 170);
+        pdf.text(`Date: ${date}`, 10, 180);
+
+        pdf.save(`Remote_Work_Agreement_${name}.pdf`);
+    }
+</script>
+
+<!-- jsPDF CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</body>
+</html>
