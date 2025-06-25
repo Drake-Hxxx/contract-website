@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Publicis Groupe Remote Work Application</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    img.logo {
+      display: block;
+      margin: 0 auto 30px;
+      width: 200px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      cursor: crosshair;
+    }
+    .signature-section {
+      margin-top: 30px;
+    }
+    .button {
+      margin-top: 30px;
+      background-color: #444;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="5f1f2f5c-e15e-4fe6-a63e-1d9d9121d8b0.png" alt="Publicis Groupe Logo" class="logo">
+    <h2>Publicis Groupe Remote Work Application Form</h2>
+
+    <form>
+      <label>Full Name:</label>
+      <input type="text" name="fullname">
+
+      <label>Email Address:</label>
+      <input type="email" name="email">
+
+      <label>Phone Number:</label>
+      <input type="tel" name="phone">
+
+      <label>Residential Address (including state and ZIP code):</label>
+      <input type="text" name="address">
+
+      <label>Position Applied For:</label>
+      <input type="text" name="position">
+
+      <label>Preferred Start Date:</label>
+      <input type="date" name="startdate">
+
+      <label>Do you have a reliable internet connection to support remote work? (Yes / No):</label>
+      <select name="internet">
+        <option value="">--Select--</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Do you have the ability to self-manage and manage your time in a remote environment? (Yes / No):</label>
+      <select name="selfmanage">
+        <option value="">--Select--</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Your primary time zone:</label>
+      <input type="text" name="timezone">
+
+      <label>Please briefly describe your relevant work experience for this position:</label>
+      <textarea rows="4" name="experience"></textarea>
+
+      <label>Please list the key skills and software tools you are proficient in:</label>
+      <textarea rows="4" name="skills"></textarea>
+
+      <p><strong>Probationary Period and Regular Employment</strong><br>
+      The probationary period is five (5) working days, during which you will undergo relevant training and work task evaluations.<br>
+      Upon passing the probationary period evaluation, you will become a regular employee of Publicis Groupe.<br>
+      As a regular employee, you will be entitled to the following company benefits:
+        <ul>
+          <li>Health insurance</li>
+          <li>401(k) retirement plan</li>
+          <li>Paid leave</li>
+          <li>Employee training and development opportunities</li>
+          <li>Remote work support equipment subsidy (subject to position)</li>
+        </ul>
+      </p>
+
+      <label>I confirm that the above information is true and accurate, and I understand the probationary period arrangements and the relevant welfare policies after confirmation of employment. I agree to comply with Publicis Groupe's relevant work regulations and confidentiality agreements.</label>
+
+      <div class="signature-section">
+        <label>Signature (electronic signature is acceptable):</label>
+        <canvas id="signatureCanvas" width="600" height="150"></canvas><br>
+        <button type="button" class="button" onclick="clearCanvas()">Clear Signature</button>
+      </div>
+
+      <label>Date:</label>
+      <input type="date" name="signdate">
+
+      <button type="submit" class="button">Submit Application</button>
+    </form>
+  </div>
+
+  <script>
+    // Signature pad functionality
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    canvas.addEventListener('mousedown', () => drawing = true);
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseout', () => drawing = false);
+    canvas.addEventListener('mousemove', draw);
+
+    function draw(e) {
+      if (!drawing) return;
+      const rect = canvas.getBoundingClientRect();
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#000';
+      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  </script>
+
+</body>
+</html>
